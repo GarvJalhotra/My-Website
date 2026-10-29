@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Garv’s Lucid Dreams · Full-Stack Developer &amp; Creative Technologist</title>
+  <meta name="description" content="Garv Jalhotra designs and builds distributed systems, high-performance backends, and immersive interactive digital experiences.">
+  <meta name="theme-color" content="#545388">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Garv’s Lucid Dreams">
+  <meta property="og:title" content="Garv’s Lucid Dreams · Garv Jalhotra">
+  <meta property="og:description" content="Garv Jalhotra designs and builds distributed systems, high-performance backends, and immersive interactive digital experiences.">
+
+  <!-- Google Fonts: Big Shoulders Display, Playfair Display & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Lenis Smooth Scroll Engine -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- 1:1 Lucid Dreams Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       SCROLL-SPACE (Provides the master scroll scrubbing height)
+       ========================================================================== -->
+  <div class="scroll-space" id="space"></div>
+
+  <!-- ==========================================================================
+       PINNED STAGE & BLACK OUTER FRAME (Direct from nesilnoble.com)
+       ========================================================================== -->
+  <div class="frame">
+    <div class="stage" id="stage">
+      
+      <!-- Authentic Film Grain Overlays -->
+      <div class="grain" aria-hidden="true">
+        <i class="g1"></i>
+        <i class="g2"></i>
+        <i class="g3"></i>
+      </div>
+
+      <!-- Top Sticky Navigation Header -->
+      <header class="top">
+        <div class="brand">
+          <span class="who">Garv Jalhotra</span>
+          <span class="status">
+            <i></i>
+            <span>Open to roles &amp; contracts</span>
+          </span>
+        </div>
+
+        <nav class="nav" aria-label="Sections">
+          <!-- Sweet Melody Sound Button & Hint -->
+          <button class="sound" id="soundBtn" aria-label="Play sweet melody sound">
+            <span class="bars" aria-hidden="true">
+              <i id="eqBar1"></i>
+              <i id="eqBar2"></i>
+              <i id="eqBar3"></i>
+              <i id="eqBar4"></i>
+            </span>
+            <span class="sound-label" id="soundLabel">Melody off</span>
+            <span class="sound-hint" id="soundHint">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="6.5" cy="17.5" r="2.6"/>
+                <circle cx="16.5" cy="15.5" r="2.6"/>
+                <path d="M9 17.5V6.5l10-2v11" fill="none" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <span>Play sweet melody</span>
+            </span>
+          </button>
+
+          <button id="navWorkBtn" class="nav-btn" data-target="work">Work</button>
+          <button id="navJourneyBtn" class="nav-btn" data-target="journey">Journey</button>
+          <button id="navAboutBtn" class="nav-btn" data-target="about">About</button>
+          <button id="navContactBtn" class="nav-btn" data-target="contact">Contact</button>
+        </nav>
+      </header>
+
+      <!-- Nested Tunnel Frames (Used for the dive-in and dive-out transitions) -->
+      <div class="tunnel" id="tunnel" aria-hidden="true">
+        <div style="inset: 12% 16%;"></div>
+        <div style="inset: 22% 26%;"></div>
+        <div style="inset: 32% 36%;"></div>
+        <div style="inset: 42% 46%;"></div>
+      </div>
+
+      <!-- ======================================================================
+           SCENE 1: HERO & "INSIDE THE MIND OF"
+           ====================================================================== -->
+      <section class="layer is-first" id="hero" data-bg="turmeric">
+        <div class="hero-inner" id="heroInner">
+          <p class="kicker">Inside the mind of</p>
+          
+          <div class="name-wrap" id="nameWrap">
+            <h1 class="name">Garv Jalhotra</h1>
+            <!-- Figma Selection Box -->
+            <div class="sel" id="figmaSel">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <em class="dim" id="figmaDim">1280 × 640</em>
+          </div>
+
+          <p class="phrase">
+            <span>Designing Experiences</span>
+            <span>Architecting Systems</span>
+          </p>
+
+          <!-- Dream Bubble Pill -->
+          <div class="dream">
+            <span class="moon">🌜</span>
+            <div>
+              <small>A Portfolio Of</small>
+              <b>Lucid Dreams</b>
+            </div>
+          </div>
+
+          <!-- Perception Engine: Eyes That Follow -->
+          <div class="eyes-widget" title="Eyes tracking your cursor">
+            <div class="eye-socket" id="eyeLeft">
+              <div class="eye-pupil" id="pupilLeft">
+                <div class="eye-specular"></div>
+              </div>
+              <div class="eye-eyelid" id="eyelidLeft"></div>
+            </div>
+            <div class="eye-socket" id="eyeRight">
+              <div class="eye-pupil" id="pupilRight">
+                <div class="eye-specular"></div>
+              </div>
+              <div class="eye-eyelid" id="eyelidRight"></div>
+            </div>
+          </div>
+
+          <!-- Bottom scroll invitation line -->
+          <div class="scroll-hint-bar" id="heroScrollHint">
+            <div class="line"></div>
+            <span>Scroll to dive inside</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 2: SYSTEMS & ARCHITECTURE
+           ====================================================================== -->
+      <section class="layer" id="systems" data-bg="monsoon">
+        <div class="sys-wrap">
+          <p class="sys-small" id="sysSmall">I architect &amp; build</p>
+          <h2 class="sys-word" id="sysWord">Systems.</h2>
+          
+          <div class="sys-card" id="sysCard">
+            <div class="token-bar" style="width: 60%;"></div>
+            <div class="token-bar" style="width: 38%; opacity: 0.4;"></div>
+            <div style="font-size: 16px; font-weight: 700; text-transform: uppercase; margin-top: 20px; color: #000;">
+              High-Throughput Streaming &amp; Resilient Core
+            </div>
+          </div>
+
+          <p class="sys-caption" id="sysCap">
+            Engineering distributed pipelines, real-time WebSockets, and low-latency client runtimes.
+          </p>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 3: EXPEDITION & TRAVEL VEHICLE (AUTO RICKSHAW / ROVER)
+           ====================================================================== -->
+      <section class="layer" id="based" data-bg="backwater">
+        <div class="based-wrap">
+          <h2 class="based-title" id="basedTitle">
+            <span>Building for</span>
+            <span>Global Scale.</span>
+          </h2>
+          <p class="based-sub" id="basedSub">
+            From low-level microservices to high-fidelity creative web applications.
+          </p>
+
+          <div class="road"></div>
+          <div class="auto" id="autoVehicle">
+            <div class="auto-bubble">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 19 21 12 17 5 21 12 2"></polygon>
+              </svg>
+              <span>GARV // EXPEDITION ROVER</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 4: SELECTED WORK (HORIZONTAL SCROLL TRACK)
+           ====================================================================== -->
+      <section class="layer work" id="work" data-bg="leaf">
+        <div class="track" id="track">
+          <div class="work-head">
+            <h2>Selected Work</h2>
+            <p>
+              Explore flagship cases in neural pipelines, spatial vector canvases, and cloud defense networks. Click any card to inspect.
+            </p>
+          </div>
+
+          <!-- Project Cards dynamically injected via app.js -->
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 5: ABOUT & MANIFESTO
+           ====================================================================== -->
+      <section class="layer" id="about" data-bg="kokum">
+        <div class="about-wrap">
+          <h2 class="about-headline" id="aboutHeadline">
+            "Code should feel tactile.<br>
+            Architecture should feel effortless."
+          </h2>
+
+          <p class="about-sub">
+            I'm Garv Jalhotra, a Full-Stack Developer &amp; Creative Technologist. I bridge robust distributed system engineering with fluid, award-winning interactive design.
+          </p>
+
+          <dl class="facts">
+            <div>
+              <dt>Production Track</dt>
+              <dd>85+ Systems Shipped</dd>
+            </div>
+            <div>
+              <dt>Years Building</dt>
+              <dd>5+ Years Craft</dd>
+            </div>
+            <div>
+              <dt>Service Uptime</dt>
+              <dd>99.99% Reliability</dd>
+            </div>
+          </dl>
+
+          <div class="tools-cloud">
+            <span>TypeScript</span>
+            <span>Rust</span>
+            <span>Go</span>
+            <span>Python</span>
+            <span>WebGL / Three.js</span>
+            <span>GSAP</span>
+            <span>Tailwind CSS</span>
+            <span>Docker</span>
+            <span>Kubernetes</span>
+            <span>Web Audio API</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 6: CLOSING DOODLES, COFFEE & CONTACT (DIVE BACK OUT)
+           ====================================================================== -->
+      <section class="layer" id="contact" data-bg="turmeric">
+        <div class="closing-wrap">
+          <h2 class="closing-title">Let’s Build Together</h2>
+
+          <!-- Coffee Brewer Widget -->
+          <div class="coffee-cup-box" id="coffeeCupBtn" title="Click to brew another shot!">
+            <div style="font-size: 54px; line-height: 1;">☕</div>
+            <p style="margin-top: 10px; font-size: 19px; color: var(--lav); font-weight: 600;" id="coffeeText">
+              1,420+ cups brewed during production.
+            </p>
+            <small style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; color: #fff; text-decoration: underline;">
+              Click to brew another cup
+            </small>
+          </div>
+
+          <div class="contact-links">
+            <a href="mailto:garv@example.com" class="primary-link">garv@example.com</a>
+            <a href="https://linkedin.com/in/garvjalhotra" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://github.com/garvjalhotra" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://twitter.com/garvjalhotra" target="_blank" rel="noopener">Twitter</a>
+          </div>
+
+          <p style="margin-top: 40px; font-size: 17px; color: var(--lav); opacity: 0.8;">
+            &copy; <span id="yearSpan"></span> GARV JALHOTRA · INSPIRED BY NESIL NOBLE’S LUCID DREAMS
+          </p>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           BOTTOM JOURNEY RULER (Direct from Nesil)
+           ====================================================================== -->
+      <div class="ruler" id="journeyRuler">
+        <div class="ticks"></div>
+        <div class="head" id="rulerHead"></div>
+      </div>
+
+    </div><!-- /stage -->
+  </div><!-- /frame -->
+
+  <!-- ==========================================================================
+       CASE STUDY VIEWER DRAWER (.cs with clip-path - Direct from Nesil)
+       ========================================================================== -->
+  <div class="cs" id="csViewer" aria-hidden="true">
+    <div class="cs-bar">
+      <button class="cs-back" id="csBackBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Back to Dreams</span>
+      </button>
+
+      <div class="cs-title" id="csTitle">Case Study</div>
+    </div>
+
+    <div class="cs-body-content" id="csBody">
+      <!-- Dynamic case study content injected via app.js -->
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/config.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
