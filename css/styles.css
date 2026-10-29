@@ -1,0 +1,1070 @@
+/* ==========================================================================
+   GARV JALHOTRA PORTFOLIO - "LUCID DREAMS" STYLESHEET
+   1:1 recreation of Nesil Noble's GSAP Pinned Spatial Scrolling Canvas
+   ========================================================================== */
+
+:root {
+  --ink: #000;
+  --paper: #fff;
+  --sel: #0D99FF;
+  --sel-deep: #0A6FC2;
+  --fg: #F4F2FF;
+  --lav: #BABAFB;
+  --turmeric: #545388;
+  --hibiscus: #7B3F6E;
+  --monsoon: #3E5591;
+  --backwater: #2B6468;
+  --leaf: #4C6230;
+  --kokum: #8A3D4E;
+  --pad: clamp(16px, 2.2vw, 32px);
+  --font-display: "Big Shoulders Display", "Big Shoulders", system-ui, sans-serif;
+  --font-serif: "Playfair Display", "Melodrama", Georgia, serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background: var(--ink);
+  color: var(--fg);
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: .012em;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  cursor: default;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--sel);
+  color: #fff;
+}
+
+/* ==========================================================================
+   SCROLL SPACE (Creates the smooth scrubbing distance)
+   ========================================================================== */
+.scroll-space {
+  height: 1600vh;
+  position: relative;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   THE STAGE: FIXED ROUNDED CANVAS (Direct from nesilnoble.com)
+   ========================================================================== */
+.frame {
+  position: fixed;
+  inset: 0;
+  padding: clamp(6px, 0.9vw, 12px);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.stage {
+  --bg: #545388;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: clamp(12px, 1.6vw, 22px);
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+  transition: background 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: auto;
+}
+
+/* Authentic Film Grain Overlays */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 80;
+  overflow: hidden;
+}
+
+.grain i {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.grain .g1 {
+  opacity: .22;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.62' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.6 -0.55'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.grain .g2 {
+  opacity: .3;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.5 -0.5'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.grain .g3 {
+  inset: -60%;
+  opacity: .16;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='1' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 2 -0.8'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: film .7s steps(1) infinite;
+}
+
+@keyframes film {
+  0% { transform: translate(0, 0); }
+  14% { transform: translate(-7%, 4%); }
+  28% { transform: translate(5%, -8%); }
+  42% { transform: translate(-11%, -3%); }
+  57% { transform: translate(9%, 7%); }
+  71% { transform: translate(-4%, 10%); }
+  85% { transform: translate(12%, -6%); }
+}
+
+/* ==========================================================================
+   HEADER & TOP BAR
+   ========================================================================== */
+.top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--pad);
+  z-index: 60;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 12px;
+  border: 1.5px solid rgba(244, 242, 255, .55);
+  border-radius: 999px;
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: .02em;
+  font-weight: 550;
+  background: rgba(255, 255, 255, .08);
+  color: var(--fg);
+}
+
+.status i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7CE38B;
+  box-shadow: 0 0 0 0 rgba(19, 138, 54, .6);
+  animation: pulse 2.4s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(19, 138, 54, .55); }
+  70% { box-shadow: 0 0 0 9px rgba(19, 138, 54, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(19, 138, 54, 0); }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 28px);
+  font-size: 19px;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  font-weight: 700;
+}
+
+.nav a, .nav button {
+  position: relative;
+  padding: 4px 0;
+  color: inherit;
+  text-decoration: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.nav a::after, .nav button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2.5px;
+  background: var(--fg);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s cubic-bezier(.2, .8, .2, 1);
+}
+
+.nav a:hover::after, .nav button:hover::after {
+  transform: scaleX(1);
+}
+
+/* Sound toggle & equalizer bars */
+.sound {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  position: relative;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: inherit;
+  font-size: 17px;
+  font-weight: 650;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1.5px solid rgba(244, 242, 255, .3);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.sound:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(244, 242, 255, 0.7);
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 15px;
+}
+
+.bars i {
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--fg);
+  transition: height .35s ease;
+}
+
+.sound.on .bars i {
+  animation: eq .9s ease-in-out infinite;
+}
+
+.sound.on .bars i:nth-child(2) { animation-delay: -.3s; }
+.sound.on .bars i:nth-child(3) { animation-delay: -.55s; }
+.sound.on .bars i:nth-child(4) { animation-delay: -.15s; }
+
+@keyframes eq {
+  0%, 100% { height: 4px; }
+  50% { height: 15px; }
+}
+
+.sound-hint {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: -6px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px 8px 10px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  background: #fff;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: none;
+  white-space: nowrap;
+  box-shadow: 3px 3px 0 #000;
+  animation: hintfloat 2.4s ease-in-out .5s infinite;
+  cursor: pointer;
+  z-index: 50;
+}
+
+.sound-hint::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 22px;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-left: 2px solid #000;
+  border-top: 2px solid #000;
+  transform: rotate(45deg);
+}
+
+@keyframes hintfloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ==========================================================================
+   SPATIAL LAYERS (Pinned scenes scrubbed by scroll)
+   ========================================================================== */
+.layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  padding: var(--pad);
+}
+
+.layer a, .layer button {
+  pointer-events: auto;
+}
+
+.layer.is-first {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Tunnel of nested zoom frames */
+.tunnel {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  will-change: transform;
+  z-index: 6;
+}
+
+.tunnel div {
+  position: absolute;
+  border: 2px solid rgba(186, 186, 251, .6);
+  background: rgba(0, 0, 0, .08);
+  border-radius: 18px;
+}
+
+/* ==========================================================================
+   SCENE 1: HERO
+   ========================================================================== */
+.hero-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  will-change: transform;
+}
+
+.kicker {
+  font-family: var(--font-display);
+  color: var(--lav);
+  font-size: clamp(20px, 2.5vw, 32px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+
+.name-wrap {
+  position: relative;
+  display: inline-block;
+  margin: 10px 0 16px;
+}
+
+.name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #fff;
+  font-size: clamp(52px, 12vw, 150px);
+  line-height: .86;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  padding: .04em .04em 0;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.sel {
+  position: absolute;
+  inset: -14px -22px;
+  border: 2px solid var(--sel);
+  pointer-events: none;
+}
+
+.sel span {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  background: var(--paper);
+  border: 2px solid var(--sel);
+}
+
+.sel span:nth-child(1) { left: -6px; top: -6px; }
+.sel span:nth-child(2) { right: -6px; top: -6px; }
+.sel span:nth-child(3) { left: -6px; bottom: -6px; }
+.sel span:nth-child(4) { right: -6px; bottom: -6px; }
+
+.dim {
+  position: absolute;
+  right: -22px;
+  top: -32px;
+  font-style: normal;
+  background: var(--sel-deep);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 650;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+}
+
+.phrase {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 12px;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  color: var(--lav);
+  opacity: .95;
+  font-size: clamp(22px, 3.8vw, 42px);
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+.dream {
+  display: inline-flex;
+  align-items: center;
+  gap: .65em;
+  padding: .55em 1.1em .55em .8em;
+  border: 2.5px solid #000;
+  border-radius: 16px;
+  background: #fff;
+  color: #000;
+  font-size: clamp(15px, 1.4vw, 21px);
+  line-height: 1.05;
+  transform: rotate(-6deg);
+  box-shadow: 4px 4px 0 #000;
+  white-space: nowrap;
+  margin: 24px auto 0;
+  transition: transform 0.3s ease;
+}
+
+.dream .moon {
+  font-size: 1.8em;
+  animation: moonbob 3.2s ease-in-out infinite alternate;
+}
+
+.dream small {
+  display: block;
+  font-size: .68em;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  opacity: .7;
+}
+
+.dream b {
+  display: block;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.28em;
+  letter-spacing: -.005em;
+}
+
+@keyframes moonbob {
+  from { transform: rotate(-12deg) translateY(-2px); }
+  to { transform: rotate(8deg) translateY(2px); }
+}
+
+/* Perception Engine: Eyes That Follow */
+.eyes-widget {
+  margin-top: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 22px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+}
+
+.eye-socket {
+  width: 48px;
+  height: 32px;
+  background: #fff;
+  border: 2.5px solid #000;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.eye-pupil {
+  width: 14px;
+  height: 14px;
+  background: #000;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -7px 0 0 -7px;
+  transition: transform 0.05s ease-out;
+}
+
+.eye-specular {
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+}
+
+.eye-eyelid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0%;
+  background: #545388;
+  z-index: 5;
+  transition: height 0.1s ease;
+}
+
+/* Scroll Hint at bottom */
+.scroll-hint-bar {
+  position: absolute;
+  bottom: calc(var(--pad) + 40px);
+  left: var(--pad);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-weight: 650;
+  color: var(--lav);
+}
+
+.scroll-hint-bar .line {
+  width: 2px;
+  height: 38px;
+  background: rgba(255, 255, 255, .25);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-hint-bar .line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -40%;
+  width: 100%;
+  height: 40%;
+  background: var(--fg);
+  animation: drip 1.8s cubic-bezier(.6, 0, .3, 1) infinite;
+}
+
+@keyframes drip {
+  to { top: 110%; }
+}
+
+/* ==========================================================================
+   SCENE 2: SYSTEMS & ARCHITECTURES
+   ========================================================================= */
+.sys-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.sys-small {
+  font-size: clamp(26px, 3.4vw, 48px);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--lav);
+  margin-bottom: 8px;
+}
+
+.sys-word {
+  font-size: clamp(54px, 16vw, 190px);
+  line-height: .85;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.sys-card {
+  margin-top: 32px;
+  width: min(88vw, 440px);
+  padding: 24px 28px;
+  background: #fff;
+  color: #000;
+  border: 3px solid #000;
+  border-radius: 20px;
+  box-shadow: 6px 6px 0 #000;
+  text-align: left;
+}
+
+.sys-card .token-bar {
+  height: 12px;
+  border-radius: 6px;
+  background: #000;
+  margin-bottom: 12px;
+}
+
+.sys-caption {
+  margin-top: 24px;
+  font-size: clamp(18px, 1.8vw, 24px);
+  color: var(--lav);
+  max-width: 44ch;
+  text-align: center;
+}
+
+/* ==========================================================================
+   SCENE 3: BASED IN / EXPEDITION & AUTO RICKSHAW / ROVER
+   ========================================================================== */
+.based-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.based-title {
+  font-size: clamp(48px, 12vw, 140px);
+  line-height: .86;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.based-title span {
+  display: block;
+}
+
+.based-sub {
+  margin-top: 20px;
+  font-size: clamp(18px, 1.8vw, 24px);
+  color: var(--lav);
+  max-width: 46ch;
+}
+
+.road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22%;
+  height: 3px;
+  background: var(--fg);
+  opacity: .85;
+}
+
+.auto {
+  position: absolute;
+  left: 0;
+  bottom: calc(22% - 10px);
+  will-change: transform;
+}
+
+.auto-bubble {
+  padding: 8px 18px;
+  background: #fff;
+  color: #000;
+  border: 2.5px solid #000;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: .02em;
+  box-shadow: 4px 4px 0 #000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   SCENE 4: SELECTED WORK (HORIZONTAL SCROLL TRACK)
+   ========================================================================== */
+.layer.work {
+  align-items: center;
+  justify-items: start;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: clamp(40px, 6vw, 100px);
+  padding: 0 var(--pad) 0 calc(var(--pad) + 2vw);
+  will-change: transform;
+}
+
+.work-head {
+  flex: 0 0 auto;
+  width: min(80vw, 440px);
+}
+
+.work-head h2 {
+  font-size: clamp(52px, 9vw, 130px);
+  line-height: .85;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.work-head p {
+  margin-top: 18px;
+  font-size: clamp(19px, 1.8vw, 24px);
+  line-height: 1.35;
+  color: var(--lav);
+}
+
+.proj {
+  flex: 0 0 auto;
+  width: clamp(320px, 42vw, 620px);
+  text-decoration: none;
+  display: block;
+  color: inherit;
+  cursor: pointer;
+}
+
+.proj .label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 19px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  color: var(--fg);
+}
+
+.proj .label em {
+  font-style: normal;
+  opacity: .75;
+}
+
+.proj .cover {
+  position: relative;
+  aspect-ratio: 4/3;
+  width: 100%;
+  background: var(--paper);
+  border: 2.5px solid var(--ink);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.45);
+  transition: transform .5s cubic-bezier(.2, .8, .2, 1), box-shadow .5s;
+}
+
+.proj .cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.proj .cover::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border: 3.5px solid var(--sel);
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.proj:hover .cover {
+  transform: translateY(-8px) rotate(-.8deg);
+  box-shadow: 12px 14px 0 rgba(0, 0, 0, 0.55);
+}
+
+.proj:hover .cover::after {
+  opacity: 1;
+}
+
+.proj h3 {
+  margin-top: 16px;
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 2.5vw, 36px);
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -.005em;
+  color: #fff;
+}
+
+.proj p {
+  margin-top: 8px;
+  font-size: 19px;
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--lav);
+}
+
+/* ==========================================================================
+   SCENE 5: ABOUT & MANIFESTO
+   ========================================================================== */
+.about-wrap {
+  width: min(92vw, 1080px);
+  margin: 0 auto;
+}
+
+.about-headline {
+  font-family: var(--font-serif);
+  font-size: clamp(38px, 5.5vw, 84px);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: #fff;
+}
+
+.about-sub {
+  margin-top: 24px;
+  font-size: clamp(19px, 1.8vw, 25px);
+  line-height: 1.4;
+  color: var(--lav);
+  max-width: 54ch;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 2px solid var(--fg);
+}
+
+.facts dt {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  opacity: .75;
+  font-weight: 700;
+  color: var(--lav);
+}
+
+.facts dd {
+  margin-top: 6px;
+  font-size: clamp(24px, 2.4vw, 34px);
+  line-height: 1.2;
+  font-weight: 800;
+  color: #fff;
+}
+
+.tools-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.tools-cloud span {
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .14);
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================================================
+   SCENE 6: CLOSING DOODLES, COFFEE & CONTACT
+   ========================================================================== */
+.closing-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.closing-title {
+  font-size: clamp(48px, 8vw, 120px);
+  line-height: .92;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.coffee-cup-box {
+  display: inline-block;
+  margin: 24px 0;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.coffee-cup-box:hover {
+  transform: scale(1.08);
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px 32px;
+  margin-top: 24px;
+}
+
+.contact-links a {
+  text-decoration: none;
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: #fff;
+  border-bottom: 2px solid transparent;
+  transition: border-color .2s;
+}
+
+.contact-links a:hover,
+.contact-links a.primary-link {
+  border-bottom-color: var(--lav);
+}
+
+/* ==========================================================================
+   BOTTOM JOURNEY RULER (Direct from Nesil)
+   ========================================================================== */
+.ruler {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: calc(var(--pad) * .7);
+  height: 30px;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.ruler .ticks {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .5) 0 1.5px, transparent 1.5px 1%);
+}
+
+.ruler .head {
+  position: absolute;
+  bottom: 0;
+  left: 0%;
+  width: 3px;
+  height: 20px;
+  background: var(--lav);
+  box-shadow: 0 0 10px var(--lav);
+  transform: translateX(-50%);
+  transition: left 0.05s ease-out;
+}
+
+/* ==========================================================================
+   CASE STUDY VIEWER DRAWER (.cs with clip-path - Direct from Nesil)
+   ========================================================================== */
+.cs {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  clip-path: inset(100% 0 0 0);
+  visibility: hidden;
+  transition: clip-path .7s cubic-bezier(.7, 0, .2, 1), visibility 0s .7s;
+  overflow-y: auto;
+}
+
+.cs.open {
+  clip-path: inset(0 0 0 0);
+  visibility: visible;
+  transition: clip-path .7s cubic-bezier(.7, 0, .2, 1), visibility 0s;
+}
+
+.cs-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 64px;
+  padding: 0 24px;
+  background: var(--ink);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.cs-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 20px 0 16px;
+  border: 2px solid rgba(255, 255, 255, .6);
+  border-radius: 999px;
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  background: none;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+}
+
+.cs-back:hover {
+  background: #fff;
+  color: var(--ink);
+  border-color: #fff;
+}
+
+.cs-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  opacity: .8;
+}
+
+.cs-body-content {
+  padding: clamp(24px, 4vw, 64px) var(--pad);
+  max-width: 1080px;
+  margin: 0 auto;
+  width: 100%;
+}
